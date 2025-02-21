@@ -6,10 +6,11 @@ import { fileURLToPath, URL } from "url"
 export default defineConfig({
     plugins: [react()],
     build: {
+        outDir: "build", // Change output directory to "build" for Render deployment
         chunkSizeWarningLimit: 1600,
         rollupOptions: {
             output: {
-                manualChunks(id) {
+                manualChunks(id: string) {
                     if (id.includes("node_modules")) {
                         return id
                             .toString()
@@ -22,11 +23,8 @@ export default defineConfig({
         },
     },
     resolve: {
-        alias: [
-            {
-                find: "@",
-                replacement: fileURLToPath(new URL("./src", import.meta.url)),
-            },
-        ],
+        alias: {
+            "@": fileURLToPath(new URL("./src", import.meta.url)),
+        },
     },
 })
